@@ -152,6 +152,10 @@ const messageBoard = (() => {
   return {logWin, logTie, logTurn}
 })();
 
+const ai = (() => {
+  
+});
+
 
 
 
