@@ -46,6 +46,10 @@ const game = (() => {
       gameBoard.resetBoard();
     }
   };
+  const logTie = () => {
+    alert("Draw");
+    gameBoard.resetBoard();
+  }
   const checkForWin = () => {
     if (gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["a2"] && gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["a3"] && gameBoard.getCoordinates()["a1"] !== "") {
       logWin();
@@ -63,13 +67,15 @@ const game = (() => {
       logWin();
     } else if (gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["b2"] && gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["c1"] && gameBoard.getCoordinates()["a3"] !== "") {
       logWin();
-    } 
+    } else if (gameBoard.getCoordinates()["a1"] !== "" && gameBoard.getCoordinates()["a2"] !== "" && gameBoard.getCoordinates()["a3"] !== "" && gameBoard.getCoordinates()["b1"] !== "" && gameBoard.getCoordinates()["b2"] !== "" && gameBoard.getCoordinates()["b3"] !== "" && gameBoard.getCoordinates()["c1"] !== "" && gameBoard.getCoordinates()["c2"] !== "" && gameBoard.getCoordinates()["c3"] !== "") {
+      logTie();
+    }
   }
   return {switchTurns, checkForWin}
 })();
 
 const gameBoard = (() => {
-  let _coordinates = {a1:"",a2:"",a3:"",b1:"",b2:"",b3:"",c1:"",c2:"",c3:""};
+  let _coordinates = {a1:"", a2:"", a3:"", b1:"", b2:"", b3:"", c1:"", c2:"", c3:""};
   
   const a1 = document.querySelector("#a1");
   a1.addEventListener('click', () => markCoordinate(game.switchTurns(), "a1", a1));
