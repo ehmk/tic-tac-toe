@@ -1,6 +1,6 @@
 function playerFactory(name, mark) {
-  let _name = name;
-  let _mark = mark;
+  const _name = name;
+  const _mark = mark;
   let _isTurn = false;
   return {
     getName() {
@@ -37,38 +37,25 @@ const game = (() => {
       return playerOne;
     }
   };
-  const logWin = () => {
-    if (playerOne.getTurn() === true) {
-      alert(`${playerOne.getName()} has won!`)
-      gameBoard.resetBoard();
-    } else {
-      alert(`${playerTwo.getName()} has won!`)
-      gameBoard.resetBoard();
-    }
-  };
-  const logTie = () => {
-    alert("Draw");
-    gameBoard.resetBoard();
-  }
   const checkForWin = () => {
     if (gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["a2"] && gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["a3"] && gameBoard.getCoordinates()["a1"] !== "") {
-      logWin();
+      messageBoard.logWin();
     } else if (gameBoard.getCoordinates()["b1"] === gameBoard.getCoordinates()["b2"] && gameBoard.getCoordinates()["b1"] === gameBoard.getCoordinates()["b3"] && gameBoard.getCoordinates()["b1"] !== "") {
-      logWin();
+      messageBoard.logWin();
     } else if (gameBoard.getCoordinates()["c1"] === gameBoard.getCoordinates()["c2"] && gameBoard.getCoordinates()["c1"] === gameBoard.getCoordinates()["c3"] && gameBoard.getCoordinates()["c1"] !== "") {
-      logWin();
+      messageBoard.logWin();
     } else if (gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["b1"] && gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["c1"] && gameBoard.getCoordinates()["a1"] !== "") {
-      logWin();
+      messageBoard.logWin();
     } else if (gameBoard.getCoordinates()["a2"] === gameBoard.getCoordinates()["b2"] && gameBoard.getCoordinates()["a2"] === gameBoard.getCoordinates()["c2"] && gameBoard.getCoordinates()["a2"] !== "") {
-      logWin();
+      messageBoard.logWin();
     } else if (gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["b3"] && gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["c3"] && gameBoard.getCoordinates()["a3"] !== "") {
-      logWin();
+      messageBoard.logWin();
     } else if (gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["b2"] && gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["c3"] && gameBoard.getCoordinates()["a1"] !== "") {
-      logWin();
+      messageBoard.logWin();
     } else if (gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["b2"] && gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["c1"] && gameBoard.getCoordinates()["a3"] !== "") {
-      logWin();
+      messageBoard.logWin();
     } else if (gameBoard.getCoordinates()["a1"] !== "" && gameBoard.getCoordinates()["a2"] !== "" && gameBoard.getCoordinates()["a3"] !== "" && gameBoard.getCoordinates()["b1"] !== "" && gameBoard.getCoordinates()["b2"] !== "" && gameBoard.getCoordinates()["b3"] !== "" && gameBoard.getCoordinates()["c1"] !== "" && gameBoard.getCoordinates()["c2"] !== "" && gameBoard.getCoordinates()["c3"] !== "") {
-      logTie();
+      messageBoard.logTie();
     }
   }
   return {switchTurns, checkForWin}
@@ -120,6 +107,27 @@ const gameBoard = (() => {
     },
     resetBoard
   };
+})();
+
+const messageBoard = (() => {
+  const messagePanel = document.querySelector("#message-panel");
+  const resetButton = document.querySelector("#reset-game");
+  resetButton.addEventListener("click", gameBoard.resetBoard());
+  const logWin = () => {
+    if (playerOne.getTurn() === true) {
+      messagePanel.textContent = (`${playerOne.getName()} has won!`)
+      gameBoard.resetBoard();
+    } else {
+      messagePanel.textContent = (`${playerTwo.getName()} has won!`)
+      gameBoard.resetBoard();
+    }
+  };
+  const logTie = () => {
+    messageBoard.textContent = ("Draw");
+    gameBoard.resetBoard();
+  };
+
+  return {logWin, logTie}
 })();
 
 
