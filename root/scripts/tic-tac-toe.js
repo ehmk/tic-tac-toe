@@ -37,16 +37,33 @@ const game = (() => {
       return playerOne;
     }
   };
+  const logWin = () => {
+    if (playerOne.getTurn() === true) {
+      alert(`${playerOne.getName()} has won!`)
+      gameBoard.resetBoard();
+    } else {
+      alert(`${playerTwo.getName()} has won!`)
+      gameBoard.resetBoard();
+    }
+  };
   const checkForWin = () => {
     if (gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["a2"] && gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["a3"] && gameBoard.getCoordinates()["a1"] !== "") {
-      if (playerOne.getTurn() === true) {
-        alert(`${playerOne.getName()} has won!`)
-        gameBoard.resetBoard();
-      } else {
-        alert(`${playerTwo.getName()} has won!`)
-        gameBoard.resetBoard();
-      }
-    }
+      logWin();
+    } else if (gameBoard.getCoordinates()["b1"] === gameBoard.getCoordinates()["b2"] && gameBoard.getCoordinates()["b1"] === gameBoard.getCoordinates()["b3"] && gameBoard.getCoordinates()["b1"] !== "") {
+      logWin();
+    } else if (gameBoard.getCoordinates()["c1"] === gameBoard.getCoordinates()["c2"] && gameBoard.getCoordinates()["c1"] === gameBoard.getCoordinates()["c3"] && gameBoard.getCoordinates()["c1"] !== "") {
+      logWin();
+    } else if (gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["b1"] && gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["c1"] && gameBoard.getCoordinates()["a1"] !== "") {
+      logWin();
+    } else if (gameBoard.getCoordinates()["a2"] === gameBoard.getCoordinates()["b2"] && gameBoard.getCoordinates()["a2"] === gameBoard.getCoordinates()["c2"] && gameBoard.getCoordinates()["a2"] !== "") {
+      logWin();
+    } else if (gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["b3"] && gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["c3"] && gameBoard.getCoordinates()["a3"] !== "") {
+      logWin();
+    } else if (gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["b2"] && gameBoard.getCoordinates()["a1"] === gameBoard.getCoordinates()["c3"] && gameBoard.getCoordinates()["a1"] !== "") {
+      logWin();
+    } else if (gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["b2"] && gameBoard.getCoordinates()["a3"] === gameBoard.getCoordinates()["c1"] && gameBoard.getCoordinates()["a3"] !== "") {
+      logWin();
+    } 
   }
   return {switchTurns, checkForWin}
 })();
