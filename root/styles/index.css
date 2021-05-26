@@ -42,6 +42,11 @@ body {
   padding: 15px;
 }
 
+#reset-game:hover {
+  border-color:cornflowerblue;
+  color:cornflowerblue;
+}
+
 p {
   color: white;
 }
