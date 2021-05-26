@@ -2,10 +2,13 @@ const playerFactory = (name, mark) => {
   return {name, mark}
 }
 
-const gameBoard = (() => {
+const playerOne = playerFactory("Player one", "X");
+const playerTwo = playerFactory("Player two", "O")
+
+const gameBoard = ((currentPlayer) => {
   let coordinates = {a1:"",a2:"",a3:"",b1:"",b2:"",b3:"",c1:"",c2:"",c3:""};
   const a1 = document.querySelector("#a1");
-  a1.addEventListener('click', () => markCoordinate(playerOne, "a1", a1));
+  a1.addEventListener('click', () => markCoordinate(playerTwo, "a1", a1));
   const a2 = document.querySelector("#a2");
   a2.addEventListener('click', () => markCoordinate(playerOne, "a2", a2));
   const a3 = document.querySelector("#a3");
@@ -24,12 +27,14 @@ const gameBoard = (() => {
   c3.addEventListener('click', () => markCoordinate(playerOne, "c3", c3));
 
   function markCoordinate(player, coordinate, selector) {
-    coordinates[coordinate] = player.mark;
-    const mark = document.createElement('p');
-    mark.textContent = coordinates[coordinate];
-    selector.appendChild(mark);
+    if (coordinates[coordinate] === "") {
+      coordinates[coordinate] = player.mark;
+      const mark = document.createElement('p');
+      mark.textContent = coordinates[coordinate];
+      selector.appendChild(mark);
+    }
   }
-  return {coordinates, markCoordinate};
+  return {coordinates};
 })();
 
 const displayController = ((gameBoard) => {
@@ -43,10 +48,16 @@ const displayController = ((gameBoard) => {
 
 const gameLoop = (() => {
   displayController.populateBoard(gameBoard);
-  alternatePlayers = function() {
-
-  }
+  let currentPlayer = playerTwo;
+  let madeMark = false;
+  // alternatePlayers = function() {
+  //   if(currentPlayer !== playerOne) currentPlayer = playerOne;
+  //   else if (currentPlayer !== playerTwo) currentPlayer = playerTwo; 
+  // }
+  return {currentPlayer}
 })();
 
-const playerOne = playerFactory("Player one", "X");
-const playerTwo = playerFactory("Player two", "O")
+
+
+
+
