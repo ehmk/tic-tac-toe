@@ -83,10 +83,6 @@ const gameBoard = (() => {
   let _coordinates = {a1:"", a2:"", a3:"", b1:"", b2:"", b3:"", c1:"", c2:"", c3:""};
   game.chooseFirstPlayer();
 
-  if (game.getTurn() === playerTwo) {
-    aiMarkCoordinate(playerTwo);
-  }
-  
   const a1 = document.querySelector("#a1");
   a1.addEventListener('click', () => {
     markCoordinate(playerOne, "a1", a1);
@@ -160,6 +156,10 @@ const gameBoard = (() => {
     }
     game.switchTurns();
     game.setFirstTurn(false);
+  }
+
+  if (game.getTurn() === playerTwo) {
+    aiMarkCoordinate(playerTwo);
   }
 
   const aiGoFirst = () => {
