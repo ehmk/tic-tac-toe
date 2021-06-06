@@ -9,14 +9,25 @@ const game = (() => {
   const setFirstTurn = (bool) => {
     _firstTurn = bool;
   }
-  const switchTurns = () => {
+  let _lastTurn;
+  const getLastTurn = () => {
+    return _lastTurn;
+  }
+  const setLastTurn = (player) => {
+    _lastTurn = player;
+  }
+  const chooseFirstPlayer = () => {
     const players = [playerOne, playerTwo];
     if (playerOne.getTurn() === false && playerTwo.getTurn() === false) {
       let randomPlayer = players[Math.floor(Math.random() * players.length)];
       randomPlayer.setTurn(true); 
       console.log(game.getTurn().getName());
       return randomPlayer;
-    } else if (playerOne.getTurn() === true) {
+    }
+  }
+  const switchTurns = () => {
+    const players = [playerOne, playerTwo];
+    if (playerOne.getTurn() === true) {
       playerOne.setTurn(false);
       playerTwo.setTurn(true);
       console.log(game.getTurn().getName());
@@ -57,6 +68,9 @@ const game = (() => {
     }
   }
   return {
+    getLastTurn,
+    setLastTurn,
+    chooseFirstPlayer,
     switchTurns,
     checkForWin,
     getTurn,
@@ -67,7 +81,7 @@ const game = (() => {
 
 const gameBoard = (() => {
   let _coordinates = {a1:"", a2:"", a3:"", b1:"", b2:"", b3:"", c1:"", c2:"", c3:""};
-  game.switchTurns();
+  game.chooseFirstPlayer();
 
   if (game.getTurn() === playerTwo) {
     aiMarkCoordinate(playerTwo);
@@ -75,44 +89,47 @@ const gameBoard = (() => {
   
   const a1 = document.querySelector("#a1");
   a1.addEventListener('click', () => {
-    markCoordinate(game.getTurn(), "a1", a1);
+    markCoordinate(playerOne, "a1", a1);
   });
   const a2 = document.querySelector("#a2");
   a2.addEventListener('click', () => {
-    markCoordinate(game.getTurn(), "a2", a2);
+    markCoordinate(playerOne, "a2", a2);
   });
   const a3 = document.querySelector("#a3");
   a3.addEventListener('click', () => {
-    markCoordinate(game.getTurn(), "a3", a3);
+    markCoordinate(playerOne, "a3", a3);
   });
   const b1 = document.querySelector("#b1");
   b1.addEventListener('click', () => {
-    markCoordinate(game.getTurn(), "b1", b1);
+    markCoordinate(playerOne, "b1", b1);
   });
   const b2 = document.querySelector("#b2");
   b2.addEventListener('click', () => {
-    markCoordinate(game.getTurn(), "b2", b2);
+    markCoordinate(playerOne, "b2", b2);
   });
   const b3 = document.querySelector("#b3");
   b3.addEventListener('click', () => {
-    markCoordinate(game.getTurn(), "b3", b3);
+    markCoordinate(playerOne, "b3", b3);
   });
   const c1 = document.querySelector("#c1");
   c1.addEventListener('click', () => {
-    markCoordinate(game.getTurn(), "c1", c1);
+    markCoordinate(playerOne, "c1", c1);
   });
   const c2 = document.querySelector("#c2");
   c2.addEventListener('click', () => {
-    markCoordinate(game.getTurn(), "c2", c2);
+    markCoordinate(playerOne, "c2", c2);
   });
   const c3 = document.querySelector("#c3");
   c3.addEventListener('click', () => {
-    markCoordinate(game.getTurn(), "c3", c3);
+    markCoordinate(playerOne, "c3", c3);
   });
 
   const _selectors = [a1, a2, a3, b1, b2, b3, c1, c2, c3];
 
   const markCoordinate = (player, coordinate, selector) => {
+    if (game.getTurn() === playerTwo) {
+      game.switchTurns();
+    }
     if (_coordinates[coordinate] === "") {
       _coordinates[coordinate] = player.getMark();
       const mark = document.createElement('p');
@@ -123,29 +140,36 @@ const gameBoard = (() => {
       }
       game.setFirstTurn(false);
       game.switchTurns();
-      if (game.getFirstTurn() === false) {
+      game.setLastTurn(playerOne);
+      if (game.getFirstTurn() === false && game.getTurn() === playerTwo) {
         aiMarkCoordinate(playerTwo);
         game.checkForWin();
       }
     }
   }
 
-  function aiMarkCoordinate(player) {
-      if (game.getTurn().getIsHuman() === false) {
-        const emptyCoords = player.getEmptyCoords(_coordinates);
-        const randomCoord = player.selectRandomCoord(emptyCoords);
-        _coordinates[randomCoord] = player.getMark();
-        const mark = document.createElement("p");
-        mark.textContent = _coordinates[randomCoord];
-        this[randomCoord].appendChild(mark);
-        if (game.getFirstTurn() === false) {
-          game.checkForWin();
-        }
-        game.setFirstTurn(false);
-        if (game.getTurn() === playerTwo) {
-          game.switchTurns();
-        }
-    } 
+  const aiMarkCoordinate = (player) => {
+    const emptyCoords = player.getEmptyCoords(_coordinates);
+    const randomCoord = player.selectRandomCoord(emptyCoords);
+    _coordinates[randomCoord] = player.getMark();
+    const mark = document.createElement("p");
+    mark.textContent = _coordinates[randomCoord];
+    this[randomCoord].appendChild(mark);
+    if (game.getFirstTurn() === false) {
+      game.checkForWin();
+    }
+    game.switchTurns();
+    game.setFirstTurn(false);
+  }
+
+  const aiGoFirst = () => {
+    const emptyCoords = playerTwo.getEmptyCoords(_coordinates);
+    const randomCoord = playerTwo.selectRandomCoord(emptyCoords);
+    _coordinates[randomCoord] = playerTwo.getMark();
+    const mark = document.createElement("p");
+    mark.textContent = _coordinates[randomCoord];
+    this[randomCoord].appendChild(mark);
+    game.setLastTurn(playerTwo);
   }
 
   const resetBoard = () => {
@@ -156,9 +180,9 @@ const gameBoard = (() => {
     }
     playerOne.setTurn(false);
     playerTwo.setTurn(false);
-    game.switchTurns();
+    game.chooseFirstPlayer();
     if (game.getTurn() === playerTwo) {
-      aiMarkCoordinate(playerTwo);
+      aiGoFirst();
     }
   }
   return {
@@ -175,8 +199,8 @@ const messageBoard = (() => {
   const messagePanel = document.querySelector("#message-panel");
   const resetButton = document.querySelector("#reset-game");
   resetButton.addEventListener("click", () => {
-    messagePanel.textContent = (`Welcome`)
-    gameBoard.resetBoard()
+    messagePanel.textContent = (`Welcome`);
+    gameBoard.resetBoard();
   });
   const logWin = () => {
     if (playerOne.getTurn() === true) {
