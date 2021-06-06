@@ -21,7 +21,6 @@ const game = (() => {
     if (playerOne.getTurn() === false && playerTwo.getTurn() === false) {
       let randomPlayer = players[Math.floor(Math.random() * players.length)];
       randomPlayer.setTurn(true); 
-      console.log(game.getTurn().getName());
       return randomPlayer;
     }
   }
@@ -30,12 +29,10 @@ const game = (() => {
     if (playerOne.getTurn() === true) {
       playerOne.setTurn(false);
       playerTwo.setTurn(true);
-      console.log(game.getTurn().getName());
       return playerTwo;
     } else if (playerTwo.getTurn() === true) {
       playerTwo.setTurn(false);
       playerOne.setTurn(true);
-      console.log(game.getTurn().getName());
       return playerOne;
     }
   };
