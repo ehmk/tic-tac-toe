@@ -1,6 +1,8 @@
 body {
   background-color: black;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: grid;
+  justify-items: center;
 }
 
 #board {
@@ -49,4 +51,26 @@ body {
 
 p {
   color: white;
+}
+
+@media (max-width: 812px) {
+  #board {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-gap: 2px;
+    width: 450px;
+    margin: auto;
+    margin-top: 50px;
+    justify-content: center;
+  }
+  #board > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
+    border-color: white;
+    height: 120px;
+    width: 120px;
+    font-size: 5em;
+  }
 }
